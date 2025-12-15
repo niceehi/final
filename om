@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    char str1[100], str2[100];
+
+    printf("Введите первую строку: ");
+    fgets(str1, 100, stdin);
+
+    printf("Введите вторую строку: ");
+    fgets(str2, 100, stdin);
+
+    // Убираем символ перевода строки
+    str1[strcspn(str1, "\n")] = '\0';
+    str2[strcspn(str2, "\n")] = '\0';
+
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+
+    // Динамический массив для общей строки
+    char *result = (char *)malloc((len1 + len2 + 1) * sizeof(char));
+
+    strcpy(result, str1);
+    strcat(result, str2);
+
+    printf("\nОбщая строка: %s", result);
+    printf("\nДлина общей строки: %d\n", strlen(result));
+
+    free(result);
+    return 0;
+}
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int N;
+    printf("Введите размер матриц N: ");
+    scanf("%d", &N);
+
+    // Выделение памяти
+    int A = (int )malloc(N * sizeof(int *));
+    int B = (int )malloc(N * sizeof(int *));
+    int C = (int )malloc(N * sizeof(int *));
+
+    for (int i = 0; i < N; i++) {
+        A[i] = (int *)malloc(N * sizeof(int));
+        B[i] = (int *)malloc(N * sizeof(int));
+        C[i] = (int *)malloc(N * sizeof(int));
+    }
+
+    srand(time(NULL));
+
+    // Заполнение случайными числами
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            A[i][j] = rand() % 10;
+            B[i][j] = rand() % 10;
+            C[i][j] = 0;
+        }
+    }
+
+    // Умножение матриц
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            for (int k = 0; k < N; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    // Вывод результата
+    printf("\nМатрица A:\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            printf("%3d ", A[i][j]);
+        printf("\n");
+    }
+
+    printf("\nМатрица B:\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            printf("%3d ", B[i][j]);
+        printf("\n");
+    }
+
+    printf("\nРезультат A * B:\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            printf("%4d ", C[i][j]);
+        printf("\n");
+    }
+
+    // Освобождение памяти
+    for (int i = 0; i < N; i++) {
+        free(A[i]);
+        free(B[i]);
+        free(C[i]);
+    }
+    free(A);
+    free(B);
+    free(C);
+
+    return 0;
+}
